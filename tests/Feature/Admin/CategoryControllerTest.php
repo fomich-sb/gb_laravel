@@ -40,17 +40,16 @@ class CategoryControllerTest extends TestCase
 	public function test_category_create_return_successfull()
 	{
 		$faker = Factory::create();
-		$title = $faker->jobTitle();
+		$caption = $faker->jobTitle();
 		$description = $faker->text(100);
 
 		$data = [
-			'title' => $title,
+			'caption' => $caption,
 			'description' => $description
 		];
 
 		$response = $this->post(route('admin.category.store'), $data);
 
-        //Почему в ответе редирект на http://localhost , а не на http://localhost/admin/category ?
 		$response->assertRedirectContains(route('admin.category.index'));
 	}
 }
