@@ -18,11 +18,11 @@ class CategoryController extends Controller
 	public function show(int $id)
 	{
 		// return current news
-		$category = $this->getCategories($id);
+	/*	$category = $this->getCategories($id);
 		$news = $this->getNewsByCategory($id);
 		return view('category.show', [
 			'category' => $category,
 			'newsList' => $news,
-		]);
+		]);*/
 	}
 }

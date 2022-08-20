@@ -45,11 +45,12 @@ class Controller extends BaseController
 
 		return $news;
 	}
-    public function getNewsByCategory(int $categoryId){
+    public function getNewsByCategory(int $categoryId)
+	{
         $news = $this->getNews();
         $res = [];
         foreach($news as $key=>$item)
-            if($item['category_id'] == $categoryId)
+            if($item['category_id'] === $categoryId)
                 $res[$key] = $item;
         return $res;
     }
@@ -58,11 +59,12 @@ class Controller extends BaseController
     
 	public function getCategories(int $id = null): array
 	{
+		$faker = Factory::create();
 		$categories = [
-            ['caption' => 'Политика'],
-            ['caption' => 'Экономика'],
-            ['caption' => 'Спорт'],
-            ['caption' => 'Экология']
+            ['caption' => 'Политика', 'description' => $faker->text(100)],
+            ['caption' => 'Экономика', 'description' => $faker->text(100)],
+            ['caption' => 'Спорт', 'description' => $faker->text(100)],
+            ['caption' => 'Экология', 'description' => $faker->text(100)]
         ];
 
 		if(!is_null($id)) {
