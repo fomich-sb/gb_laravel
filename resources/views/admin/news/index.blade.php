@@ -29,7 +29,7 @@
             </tr>
             @empty
                 <tr>
-                    <td colspan="6">Записе не найдено</td>
+                    <td colspan="6">Записей не найдено</td>
                 </tr>
             @endforelse
             </tbody>

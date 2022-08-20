@@ -14,11 +14,15 @@ class Controller extends BaseController
 
     
     
+	public $categoriesFile = 'categories.json';
+	public $categories = null;
+    
 	public function getNews(int $id = null): array
 	{
 		$news = [];
 		$faker = Factory::create();
         $categories = $this->getCategories();
+
 		if(!is_null($id)) {
 			return [
 				'title'       => $faker->jobTitle(),
@@ -26,8 +30,8 @@ class Controller extends BaseController
 				'status'      => 'DRAFT',
 				'description' => $faker->text(100),
 				'created_at'  => now('Europe/Moscow'),
-				'category_id'  => $id % count($categories),
-                'category' => $this->getCategories($id % count($categories))
+				'category_id'  => array_keys($categories)[$id % count($categories)],
+                'category' => $this->getCategories(array_keys($categories)[$id % count($categories)])
 			];
 		}
 
@@ -38,8 +42,8 @@ class Controller extends BaseController
 			    'status'      => 'DRAFT',
 			    'description' => $faker->text(100),
 			    'created_at'  => now('Europe/Moscow'),
-				'category_id'  => $i % count($categories),
-                'category' => $this->getCategories($i % count($categories)) 
+				'category_id'  => array_keys($categories)[$i % count($categories)],
+                'category' => $this->getCategories(array_keys($categories)[$i % count($categories)]) 
 			];
 		}
 
@@ -55,22 +59,37 @@ class Controller extends BaseController
         return $res;
     }
 
-    
-    
 	public function getCategories(int $id = null): array
 	{
-		$faker = Factory::create();
-		$categories = [
-            ['caption' => 'Политика', 'description' => $faker->text(100)],
-            ['caption' => 'Экономика', 'description' => $faker->text(100)],
-            ['caption' => 'Спорт', 'description' => $faker->text(100)],
-            ['caption' => 'Экология', 'description' => $faker->text(100)]
-        ];
-
-		if(!is_null($id)) {
-			return $categories[$id];
+		if($this->categories === null)
+		{
+			$data = json_decode(file_get_contents(storage_path($this->categoriesFile)));
+			$this->categories = [];
+			foreach($data as $row)
+				$this->categories[$row->id] = (array)$row;
 		}
+		if($id === null)
+			return $this->categories;
+		else
+			return $this->categories[$id];
+	}
 
-		return $categories;
+	public function getOrders(int $id = null): array
+	{
+		if($id === null)
+		{
+			$orders = [];
+			$dir = storage_path('orders');
+			if ($dh = opendir($dir)) {
+				while (($file = readdir($dh)) !== false) {
+					if(is_file($dir . DIRECTORY_SEPARATOR . $file))
+						$orders[str_replace('.json','',$file)] = (array)json_decode(file_get_contents($dir . DIRECTORY_SEPARATOR . $file));
+				}
+				closedir($dh);
+			}
+			return $orders;
+		}
+		else
+			return [];
 	}
 }

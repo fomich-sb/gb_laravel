@@ -4,6 +4,8 @@
 @section('content')
     @if(isset($category))
       <h2>{{ $category['caption'] }}</h2><br>
+    @else
+      <h2>Все новости</h2><br>
     @endif
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       @forelse($newsList as $key => $news)

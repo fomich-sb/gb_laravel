@@ -19,11 +19,18 @@
                 <td>{{ $key }}</td>
                 <td>{{ $category['caption'] }}</td>
                 <td>{{ $category['description'] }}</td>
-                <td><a href="{{ route('admin.category.edit', ['category' => $key]) }}">Ред.</a> &nbsp; <a href="" style="color: red;">Уд.</a></td>
+                <td> 
+                    <form action="{{ route('admin.category.destroy', $key) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        @csrf
+                        <a href="{{ route('admin.category.edit', ['category' => $key]) }}">Ред.</a> &nbsp; <button style="color: red;" >Уд.</button>
+                    </form>
+                    
+                </td>
             </tr>
             @empty
                 <tr>
-                    <td colspan="6">Записе не найдено</td>
+                    <td colspan="6">Записей не найдено</td>
                 </tr>
             @endforelse
             </tbody>
