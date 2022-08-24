@@ -5,7 +5,7 @@
     </a>
     <a class="py-2 d-none d-md-inline-block @if(request()->routeIs('category.*')) active @endif" href="{{ route('category.index', []) }}">Категории</a>
     <a class="py-2 d-none d-md-inline-block @if(request()->routeIs('news.*')) active @endif" href="{{ route('news.index', []) }}">Новости</a>
-    <a class="py-2 d-none d-md-inline-block @if(request()->routeIs('order.*')) active @endif" href="{{ route('order.create', []) }}">Заказ на новости</a>
+    <a class="py-2 d-none d-md-inline-block @if(request()->routeIs('source.*')) active @endif" href="{{ route('source.create', []) }}">Заказ на новости</a>
     <a class="py-2 d-none d-md-inline-block @if(request()->routeIs('admin.*')) active @endif" href="{{ route('admin.index', []) }}">Панель управления</a>
   </nav>
 </header>

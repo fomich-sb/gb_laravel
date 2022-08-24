@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\News;
 
 class NewsController extends Controller
 {
@@ -12,8 +14,8 @@ class NewsController extends Controller
 		if(request()->get('categoryId') !== null)
 		{
 			$categoryId = intval(request()->get('categoryId'));
-			$category = $this->getCategories($categoryId);
-			$news = $this->getNewsByCategory($categoryId);
+			$category = app(Category::class)->getCategoryById($categoryId);
+			$news = app(News::class)->getNewsByCategoryId($categoryId);
 			//list all news
 			return view('news.index', [
 				'category' => $category,
@@ -22,7 +24,7 @@ class NewsController extends Controller
 		}
 		else
 		{
-			$news = $this->getNews();
+			$news = app(News::class)->getNews();
 			//list all news
 			return view('news.index', [
 				'newsList' => $news
@@ -33,7 +35,7 @@ class NewsController extends Controller
 	public function show(int $id)
 	{
 		// return current news
-		$news = $this->getNews($id);
+		$news = app(News::class)->getNewsById($id);
 		return view('news.show', [
 			'news' => $news
 		]);

@@ -16,13 +16,13 @@
             </tr>
             </thead>
             <tbody>
-            @forelse($orderList as $key => $order) 
+            @forelse($sourceList as $key => $source) 
             <tr>
                 <td>{{ $key }}</td>
-                <td>{{ $order['name'] }}</td>
-                <td>@isset($order['contacts']) {{ $order['contacts'] }} @endisset</td>
-                <td>{{ $order['url'] }}</td>
-                <td>@isset($order['description']) {{ $order['description'] }} @endisset</td>
+                <td>{{ $source->creator_name }}</td>
+                <td>{{ $source->creator_contacts }}</td>
+                <td>{{ $source->url }}</td>
+                <td>{{ $source->comment }}</td>
                 <td></td>
             </tr>
             @empty

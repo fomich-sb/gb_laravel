@@ -20,11 +20,11 @@
             @forelse($newsList as $key => $news)
             <tr>
                 <td>{{ $key }}</td>
-                <td>{{ $news['title'] }}</td>
-                <td>{{ $news['category']['caption'] }}</td>
-                <td>{{ $news['author'] }}</td>
+                <td>{{ $news->title }}</td>
+                <td>@if(is_null($news->category_caption)) - @else {{ $news->category_caption }} @endif</td>
+                <td>{{ $news->author }}</td>
                 <td>DRAFT</td>
-                <td>{{ $news['created_at']->format('d-m-Y H:i') }}</td>
+                <td>@if(is_null($news->created_at)) - @else {{ $news->created_at->format('d-m-Y H:i') }} @endif</td>
                 <td><a href="{{ route('admin.news.edit', ['news' => $key]) }}">Ред.</a> &nbsp; <a href="" style="color: red;">Уд.</a></td>
             </tr>
             @empty

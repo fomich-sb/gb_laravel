@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -17,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         return view('admin.category.index', [
-			'categoryList' => $this->getCategories()
+			'categoryList' => app(Category::class)->getCategories()
 		]);
     }
 
@@ -39,13 +40,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+/*        $request->validate([
 			'caption' => ['required', 'string', 'min:5', 'max:255']
 		]);
 
-        $categories = $this->getCategories();
-        if(request()->get('category') !== null)
-            $categoryId = intval(request()->get('category'));
+        $categories = app(Category::class)->getCategories();
+        if($request->get('category') !== null)
+            $categoryId = intval($request->get('category'));
         else
         {
             $categoryId = array_key_last($categories)+1;
@@ -57,7 +58,7 @@ class CategoryController extends Controller
 
         file_put_contents(storage_path($this->categoriesFile), json_encode($categories));
 
-		return response()->redirectToRoute('admin.category.index');
+		return response()->redirectToRoute('admin.category.index');*/
     }
 
     /**
@@ -79,12 +80,12 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $categoryId = intval($id);
+ /*       $categoryId = intval($id);
         $category = $this->getCategories()[$categoryId];
         return view('admin.category.edit', [
             'categoryId' => $categoryId,
             'category' => $category
-        ]);
+        ]);*/
     }
 
     /**
@@ -107,11 +108,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $categories = $this->getCategories();
+/*        $categories = $this->getCategories();
 
         unset($categories[intval($id)]);
         file_put_contents(storage_path($this->categoriesFile), json_encode($categories));
 
-		return response()->redirectToRoute('admin.category.index');
+		return response()->redirectToRoute('admin.category.index');*/
     }
 }

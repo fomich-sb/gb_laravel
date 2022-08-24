@@ -20,9 +20,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @if(request()->routeIs('admin.order.*')) active @endif" href="{{ route('admin.order.index') }}">
+                <a class="nav-link @if(request()->routeIs('admin.source.*')) active @endif" href="{{ route('admin.source.index') }}">
                     <span data-feather="file" class="align-text-bottom"></span>
-                    Запросы на новости
+                    Источники новостей
                 </a>
             </li>
 

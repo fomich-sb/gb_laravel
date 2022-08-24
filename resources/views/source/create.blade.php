@@ -11,7 +11,7 @@
             @endforeach
         @endif
 
-        <form method="post" action="{{ route('order.store', []) }}">
+        <form method="post" action="{{ route('source.store') }}">
             @csrf
             <div class="form-group">
                 <label for="name">Ваше имя</label>

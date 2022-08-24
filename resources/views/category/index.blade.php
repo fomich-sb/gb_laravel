@@ -2,15 +2,15 @@
 @extends('layouts.main')
 @section('title') Список новостей @parent @endsection
 @section('content')
-      @forelse($categoryList as $key => $category)
+      @forelse($categoryList as $category)
         @if($loop->index % 2 === 0)
           <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
         @endif
-            <a href="{{ route('news.index', ['categoryId' => $key]) }}" style='text-decoration: none;'>
+            <a href="{{ route('news.index', ['categoryId' => $category->id]) }}" style='text-decoration: none;'>
               <div class="@if($loop->index % 2 === intval($loop->index / 2) % 2) text-bg-dark @else text-bg-light @endif me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
                 <div class="my-3 py-3">
-                  <h2 class="display-5">{{ $category['caption'] }}</h2>
-                  <p class="lead">{{ $category['description'] }}</p>
+                  <h2 class="display-5">{{ $category->caption }}</h2>
+                  <p class="lead">{{ $category->description }}</p>
                 </div>
               </div>
             </a>

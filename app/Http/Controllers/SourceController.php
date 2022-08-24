@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Source;
 
-class OrderController extends Controller
+class SourceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +15,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('admin.order.index', [
-            'orderList' => $this->getOrders()
-        ]);
+
     }
 
     /**
@@ -26,6 +25,7 @@ class OrderController extends Controller
      */
     public function create()
     {
+        return view('source.create');
     }
 
     /**
@@ -36,7 +36,14 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+    /*    $request->validate([
+			'name' => ['required', 'string', 'min:4', 'max:255'],
+			'url' => ['required', 'url'],
+		]);
 
+        file_put_contents(storage_path('orders/' . time() . '.json'), json_encode($request->only(['name', 'contacts', 'url', 'description'])));
+
+		return view('order.created');*/
     }
 
     /**

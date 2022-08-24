@@ -17,11 +17,11 @@
             @forelse($categoryList as $key => $category)
             <tr>
                 <td>{{ $key }}</td>
-                <td>{{ $category['caption'] }}</td>
-                <td>{{ $category['description'] }}</td>
+                <td>{{ $category->caption }}</td>
+                <td>{{ $category->description }}</td>
                 <td> 
                     <form action="{{ route('admin.category.destroy', $key) }}" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
+                        @method('DELETE')
                         @csrf
                         <a href="{{ route('admin.category.edit', ['category' => $key]) }}">Ред.</a> &nbsp; <button style="color: red;" >Уд.</button>
                     </form>
