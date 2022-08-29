@@ -5,11 +5,7 @@
         <br>
         <h2>Новый запрос на новости</h2>
 
-        @if($errors->any())
-            @foreach($errors->all() as $error)
-                @include('inc.message', ['message' => $error])
-            @endforeach
-        @endif
+        @include('inc.message')
 
         <form method="post" action="{{ route('source.store') }}">
             @csrf

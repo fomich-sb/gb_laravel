@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
@@ -14,35 +14,32 @@ class News extends Model
     public const DRAFT = 'DRAFT';
     public const ACTIVE = 'ACTIVE';
     public const BLOCKED = 'BLOCKED';
-    
-    protected $table = "news";
+    protected $fillable = [
+        'category_id',
+        'source_id',
+        'title',
+        'slug',
+        'author',
+        'status',
+        'image',
+        'description'
+    ];
 
-//    private static $selectedFields = ['id', 'title', 'description', 'author', 'status', 'category_id', 'created_at'];
 
-    public function getNews()
+    public function scopeStatus(Builder $query): Builder
     {
-        return DB::table('news')
-            ->leftJoin('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.caption as category_caption')
-            ->get();
+
+        return $query->where('status', News::DRAFT)
+            ->orWhere('status', News::ACTIVE);
     }
 
-    public function getNewsByCategoryId(int $id)
+
+    public function category(): BelongsTo
     {
-        return DB::table('news')
-            ->leftJoin('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.caption as category_caption')
-            ->where('category_id', $id)
-            ->get();
-
+        return $this->belongsTo(Category::class);
     }
-    public function getNewsById(int $id)
-    {        
-        return DB::table('news')
-            ->leftJoin('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.caption as category_caption')
-            ->where('news.id', $id)
-            ->first();
-
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(Source::class);
     }
 }

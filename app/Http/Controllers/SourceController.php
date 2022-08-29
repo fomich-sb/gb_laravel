@@ -36,14 +36,22 @@ class SourceController extends Controller
      */
     public function store(Request $request)
     {
-    /*    $request->validate([
+        $request->validate([
 			'name' => ['required', 'string', 'min:4', 'max:255'],
 			'url' => ['required', 'url'],
 		]);
 
-        file_put_contents(storage_path('orders/' . time() . '.json'), json_encode($request->only(['name', 'contacts', 'url', 'description'])));
+        $source = new Source(
+            $request->only(['url', 'creator_name', 'creator_contacts', 'comment'])
+        );
 
-		return view('order.created');*/
+        if($source->save()) {
+            return view('source.created');
+        }
+
+		return back()->with('error', 'Не удалось добавить запись');
+
+		
     }
 
     /**

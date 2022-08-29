@@ -17,8 +17,9 @@ class CategoryController extends Controller
 
     public function index()
     {
+        $categories = Category::select(Category::$selectedFields)->get();
         return view('admin.category.index', [
-			'categoryList' => app(Category::class)->getCategories()
+			'categoryList' => $categories
 		]);
     }
 
@@ -40,25 +41,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-/*        $request->validate([
+        $request->validate([
 			'caption' => ['required', 'string', 'min:5', 'max:255']
 		]);
 
-        $categories = app(Category::class)->getCategories();
-        if($request->get('category') !== null)
-            $categoryId = intval($request->get('category'));
-        else
-        {
-            $categoryId = array_key_last($categories)+1;
-            $categories[$categoryId] = ['id' => $categoryId];
+        $category = new Category(
+            $request->only(['caption', 'description'])
+        );
+
+        if($category->save()) {
+            return redirect()->route('admin.category.index')
+                ->with('success', 'Запись успешно добавлена');
         }
-        
-        $categories[$categoryId]['caption'] = $request->get('caption');
-        $categories[$categoryId]['description'] = $request->get('description');
 
-        file_put_contents(storage_path($this->categoriesFile), json_encode($categories));
-
-		return response()->redirectToRoute('admin.category.index');*/
+		return back()->with('error', 'Не удалось добавить запись');
     }
 
     /**
@@ -78,14 +74,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
- /*       $categoryId = intval($id);
-        $category = $this->getCategories()[$categoryId];
         return view('admin.category.edit', [
-            'categoryId' => $categoryId,
             'category' => $category
-        ]);*/
+        ]);
     }
 
     /**
@@ -95,9 +88,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $category->caption = $request->input('caption');
+        $category->description = $request->input('description');
+
+        if($category->save()) {
+            return redirect()->route('admin.category.index')
+                ->with('success', 'Запись успешно обновлена');
+        }
+
+        return back()->with('error', 'Не удалось обновить запись');
     }
 
     /**
@@ -106,13 +107,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-/*        $categories = $this->getCategories();
-
-        unset($categories[intval($id)]);
-        file_put_contents(storage_path($this->categoriesFile), json_encode($categories));
-
-		return response()->redirectToRoute('admin.category.index');*/
+        if($category->delete())
+            return redirect()->route('admin.category.index')
+                ->with('success', 'Запись удалена');
+        else
+            return redirect()->route('admin.category.index')
+                ->with('error', 'Ошибка удаления');
     }
 }

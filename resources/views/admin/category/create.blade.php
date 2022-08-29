@@ -4,13 +4,9 @@
         <br>
         <h2>Добавить категорию</h2>
 
-        @if($errors->any())
-            @foreach($errors->all() as $error)
-                @include('inc.message', ['message' => $error])
-            @endforeach
-        @endif
+        @include('inc.message')
 
-        <form method="post" action="{{ route('admin.category.store', []) }}">
+        <form method="post" action="{{ route('admin.category.store') }}">
             @csrf
             <div class="form-group">
                 <label for="caption">Заголовок</label>

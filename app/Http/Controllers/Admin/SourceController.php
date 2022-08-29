@@ -15,8 +15,9 @@ class SourceController extends Controller
      */
     public function index()
     {
+        $sourceList = Source::select(Source::$selectedFields)->get();
         return view('admin.source.index', [
-            'sourceList' => app(Source::class)->getSources()
+            'sourceList' => $sourceList
         ]);
     }
 
@@ -27,6 +28,7 @@ class SourceController extends Controller
      */
     public function create()
     {
+        return view('admin.source.create');
     }
 
     /**
@@ -37,6 +39,20 @@ class SourceController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+			'url' => ['required', 'string', 'min:5', 'max:255']
+		]);
+
+        $source = new Source(
+            $request->only(['url', 'creator_name', 'creator_contacts', 'comment'])
+        );
+
+        if($source->save()) {
+            return redirect()->route('admin.source.index')
+                ->with('success', 'Запись успешно добавлена');
+        }
+
+		return back()->with('error', 'Не удалось добавить запись');
 
     }
 
@@ -57,8 +73,11 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Source $source)
     {
+        return view('admin.source.edit', [
+            'source' => $source
+        ]);
     }
 
     /**
@@ -68,9 +87,16 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Source $source)
     {
-        //
+        $source->update($request->only(['url', 'creator_name', 'creator_contacts', 'comment']));
+
+        if($source->save()) {
+            return redirect()->route('admin.source.index')
+                ->with('success', 'Запись успешно обновлена');
+        }
+
+        return back()->with('error', 'Не удалось обновить запись');
     }
 
     /**
@@ -79,8 +105,13 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Source $source)
     {
-        //
+        if($source->delete())
+            return redirect()->route('admin.source.index')
+                ->with('success', 'Запись удалена');
+        else
+            return redirect()->route('admin.source.index')
+                ->with('error', 'Ошибка удаления');
     }
 }

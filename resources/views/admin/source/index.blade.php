@@ -4,6 +4,7 @@
     <h2>Список запросов</h2>
     <br>
     <div class="table-responsive">
+        @include('inc.message')
         <table class="table table-striped table-sm">
             <thead>
             <tr>
@@ -16,14 +17,21 @@
             </tr>
             </thead>
             <tbody>
-            @forelse($sourceList as $key => $source) 
+            @forelse($sourceList as $source) 
             <tr>
-                <td>{{ $key }}</td>
+                <td>{{ $source->id }}</td>
                 <td>{{ $source->creator_name }}</td>
                 <td>{{ $source->creator_contacts }}</td>
                 <td>{{ $source->url }}</td>
                 <td>{{ $source->comment }}</td>
-                <td></td>
+                <td> 
+                    <form action="{{ route('admin.source.destroy', $source) }}" method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <a href="{{ route('admin.source.edit', ['source' => $source]) }}">Ред.</a> &nbsp; 
+                        <button style="color: red;" >Уд.</button>
+                    </form>
+                </td>
             </tr>
             @empty
                 <tr>
@@ -33,4 +41,5 @@
             </tbody>
         </table>
     </div>
+    <a href="{{ route('admin.source.create') }}"  class="btn btn-primary">Добавить запись</a>
 @endsection

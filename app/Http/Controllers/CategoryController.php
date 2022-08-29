@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index()
 	{
-		$categories = app(Category::class)->getCategories();
+		$categories = Category::select(Category::$selectedFields)->get();
 		//list all news
 		return view('category.index', [
 			'categoryList' => $categories

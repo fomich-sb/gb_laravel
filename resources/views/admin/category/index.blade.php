@@ -4,6 +4,7 @@
     <h2>Список категорий</h2>
     <br>
     <div class="table-responsive">
+        @include('inc.message')
         <table class="table table-striped table-sm">
             <thead>
             <tr>
@@ -16,16 +17,16 @@
             <tbody>
             @forelse($categoryList as $key => $category)
             <tr>
-                <td>{{ $key }}</td>
+                <td>{{ $category->id }}</td>
                 <td>{{ $category->caption }}</td>
                 <td>{{ $category->description }}</td>
                 <td> 
-                    <form action="{{ route('admin.category.destroy', $key) }}" method="POST">
+                    <form action="{{ route('admin.category.destroy', $category) }}" method="POST">
                         @method('DELETE')
                         @csrf
-                        <a href="{{ route('admin.category.edit', ['category' => $key]) }}">Ред.</a> &nbsp; <button style="color: red;" >Уд.</button>
+                        <a href="{{ route('admin.category.edit', ['category' => $category]) }}">Ред.</a> &nbsp; 
+                        <button style="color: red;" >Уд.</button>
                     </form>
-                    
                 </td>
             </tr>
             @empty

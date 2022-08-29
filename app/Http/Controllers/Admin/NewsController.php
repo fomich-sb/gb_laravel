@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Source;
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Queries\NewsQueryBuilder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class NewsController extends Controller
 {
@@ -13,10 +18,10 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(NewsQueryBuilder $builder)
     {
         return view('admin.news.index', [
-			'newsList' => app(News::class)->getNews()
+			'newsList' => $builder->getNews()
 		]);
     }
 
@@ -27,7 +32,12 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('admin.news.create');
+        $categories = Category::all();
+        $sources = Source::all();
+		return view('admin.news.create', [
+            'categories' => $categories,
+            'sources' => $sources,
+        ]);
     }
 
     /**
@@ -36,9 +46,22 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(
+        Request $request,
+        NewsQueryBuilder $builder
+    ): RedirectResponse {
+
+        $news = $builder->create(
+            $request->only(['category_id', 'source_id',
+                'title', 'author', 'status', 'image', 'description'])
+        );
+        
+        if($news) {
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Запись успешно добавлена');
+        }
+
+        return back()->with('error', 'Не удалось добавить запись');
     }
 
     /**
@@ -58,9 +81,15 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(News $news)
     {
-        return view('admin.news.edit');
+        $categories = Category::all();
+        $sources = Source::all();
+		return view('admin.news.edit', [
+            'news' => $news,
+            'categories' => $categories,
+            'sources' => $sources,
+        ]);
     }
 
     /**
@@ -70,9 +99,20 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(
+        Request $request,
+        News $news,
+        NewsQueryBuilder $builder
+    ): RedirectResponse {
+        if($builder->update($news, $request->only(['category_id', 'source_id',
+            'title', 'author', 'status', 'image', 'description']))) {
+
+            return redirect()->route('admin.news.index')
+                    ->with('success', 'Запись успешно обновлена');
+
+        }
+
+        return back()->with('error', 'Не удалось обновить запись');
     }
 
     /**
@@ -81,8 +121,13 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(News $news)
     {
-        //
+        if($news->delete())
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Запись удалена');
+        else
+            return redirect()->route('admin.news.index')
+                ->with('error', 'Ошибка удаления');
     }
 }
