@@ -11,35 +11,32 @@ use Illuminate\Support\Collection;
 
 final class NewsQueryBuilder
 {
-    private Builder $model;
+    private Builder $query;
     public function __construct()
     {
-        $this->model = News::query();
+        $this->query = News::query();
     }
 
     public function getNews(): Collection|LengthAwarePaginator
     {
-       return $this->model
+       return $this->query
            ->status()
-           ->with('category')
-           ->with('source')
+           ->with(['category', 'source'])
            ->paginate(config('pagination.admin.news'));
     }
 
     public function getActiveNews($category=null): Collection|LengthAwarePaginator
     {
         if($category)
-            return $this->model
+            return $this->query
             ->where('status', News::ACTIVE)
             ->where('category_id', $category->id)
-            ->with('category')
-            ->with('source')
+            ->with(['category', 'source'])
             ->paginate(config('pagination.admin.news'));
         else
-            return $this->model
+            return $this->query
             ->where('status', News::ACTIVE)
-            ->with('category')
-            ->with('source')
+            ->with(['category', 'source'])
             ->paginate(config('pagination.admin.news'));
     }
     

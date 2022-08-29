@@ -13,7 +13,7 @@
                 <select class="form-control" name="category_id" id="category_id">
                     <option value="0">Выбрать</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" @if(old('category_id') === $category->id) selected @endif>{{ $category->caption }}</option>
+                        <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $category->caption }}</option>
                     @endforeach
                 </select>
             </div>
@@ -22,7 +22,7 @@
                 <select class="form-control" name="source_id" id="source_id">
                     <option value="0">Выбрать</option>
                     @foreach($sources as $source)
-                        <option value="{{ $source->id }}" @if(old('source_id') === $source->id) selected @endif>{{ $source->url }}</option>
+                        <option value="{{ $source->id }}" @selected(old('source_id') == $source->id) >{{ $source->url }}</option>
                     @endforeach
                 </select>
             </div>

@@ -29,12 +29,8 @@
                 <td>{{ $news->status }}</td>
                 <td>@if(is_null($news->created_at)) - @else {{ $news->created_at->format('d-m-Y H:i') }} @endif</td>
                 <td>
-                    <form action="{{ route('admin.news.destroy', $news) }}" method="POST">
-                        @method('DELETE')
-                        @csrf
-                        <a href="{{ route('admin.news.edit', ['news' => $news]) }}">Ред.</a> &nbsp; 
-                        <button style="color: red;" >Уд.</button>
-                    </form>
+                    <a href="{{ route('admin.news.edit', ['news' => $news]) }}">Ред.</a> &nbsp; 
+                    <button style="color: red;"  onclick='deleteElement({{ $news->id }})'>Уд.</button>
                 </td>
             </tr>
             @empty
@@ -49,3 +45,22 @@
     <br>
     <a href="{{ route('admin.news.create') }}"  class="btn btn-primary">Добавить запись</a>
 @endsection
+
+
+<script>
+    function deleteElement(id)
+    {
+        let data = {
+            '_method': 'DELETE',
+            '_token': '{{ csrf_token() }}'
+        };
+        fetch('{{ route('admin.news.index') }}/'+id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            document.location.reload();
+        });
+    }
+</script>

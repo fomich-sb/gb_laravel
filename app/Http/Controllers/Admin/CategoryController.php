@@ -109,11 +109,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if($category->delete())
+        if($category->delete()){
             return redirect()->route('admin.category.index')
                 ->with('success', 'Запись удалена');
-        else
+        }
+        else{
             return redirect()->route('admin.category.index')
                 ->with('error', 'Ошибка удаления');
+        }
     }
 }

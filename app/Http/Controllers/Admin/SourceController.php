@@ -107,11 +107,13 @@ class SourceController extends Controller
      */
     public function destroy(Source $source)
     {
-        if($source->delete())
+        if($source->delete()){
             return redirect()->route('admin.source.index')
                 ->with('success', 'Запись удалена');
-        else
+        }
+        else{
             return redirect()->route('admin.source.index')
                 ->with('error', 'Ошибка удаления');
+        }
     }
 }

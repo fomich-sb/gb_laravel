@@ -12,8 +12,7 @@ class NewsController extends Controller
 
     public function index(NewsQueryBuilder $builder)
 	{
-		if(request()->get('categoryId') !== null)
-		{
+		if(request()->get('categoryId') !== null){
 			$categoryId = intval(request()->get('categoryId'));
 			$category = app(Category::class)->find($categoryId);
 			$news = $builder->getActiveNews($category);
@@ -23,8 +22,7 @@ class NewsController extends Controller
 				'newsList' => $news
 			]);
 		}
-		else
-		{
+		else{
 			$news = $builder->getActiveNews();
 			//list all news
 			return view('news.index', [

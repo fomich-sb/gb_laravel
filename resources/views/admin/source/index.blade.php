@@ -25,12 +25,8 @@
                 <td>{{ $source->url }}</td>
                 <td>{{ $source->comment }}</td>
                 <td> 
-                    <form action="{{ route('admin.source.destroy', $source) }}" method="POST">
-                        @method('DELETE')
-                        @csrf
-                        <a href="{{ route('admin.source.edit', ['source' => $source]) }}">Ред.</a> &nbsp; 
-                        <button style="color: red;" >Уд.</button>
-                    </form>
+                    <a href="{{ route('admin.source.edit', ['source' => $source]) }}">Ред.</a> &nbsp; 
+                    <button style="color: red;"  onclick='deleteElement({{ $source->id }})'>Уд.</button>
                 </td>
             </tr>
             @empty
@@ -43,3 +39,22 @@
     </div>
     <a href="{{ route('admin.source.create') }}"  class="btn btn-primary">Добавить запись</a>
 @endsection
+
+
+<script>
+    function deleteElement(id)
+    {
+        let data = {
+            '_method': 'DELETE',
+            '_token': '{{ csrf_token() }}',
+        };
+        fetch('{{ route('admin.source.index') }}/'+id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            document.location.reload();
+        });
+    }
+</script>

@@ -21,12 +21,8 @@
                 <td>{{ $category->caption }}</td>
                 <td>{{ $category->description }}</td>
                 <td> 
-                    <form action="{{ route('admin.category.destroy', $category) }}" method="POST">
-                        @method('DELETE')
-                        @csrf
-                        <a href="{{ route('admin.category.edit', ['category' => $category]) }}">Ред.</a> &nbsp; 
-                        <button style="color: red;" >Уд.</button>
-                    </form>
+                    <a href="{{ route('admin.category.edit', ['category' => $category]) }}">Ред.</a> &nbsp; 
+                    <button style="color: red;"  onclick='deleteElement({{ $category->id }})'>Уд.</button>
                 </td>
             </tr>
             @empty
@@ -40,3 +36,21 @@
     <br>
     <a href="{{ route('admin.category.create') }}"  class="btn btn-primary">Добавить категорию</a>
 @endsection
+
+<script>
+    function deleteElement(id)
+    {
+        let data = {
+            '_method': 'DELETE',
+            '_token': '{{ csrf_token() }}'
+        };
+        fetch('{{ route('admin.category.index') }}/'+id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            document.location.reload();
+        });
+    }
+</script>
