@@ -24,6 +24,12 @@ final class NewsQueryBuilder
            ->with(['category', 'source'])
            ->paginate(config('pagination.admin.news'));
     }
+    public function getAllNews(): Collection|LengthAwarePaginator
+    {
+       return $this->query
+           ->with(['category', 'source'])
+           ->paginate(config('pagination.admin.news'));
+    }
 
     public function getActiveNews($category=null): Collection|LengthAwarePaginator
     {

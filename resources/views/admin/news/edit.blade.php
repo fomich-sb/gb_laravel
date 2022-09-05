@@ -17,6 +17,7 @@
                         <option value="{{ $category->id }}" @selected($news->category_id == $category->id) >{{ $category->caption }}</option>
                     @endforeach
                 </select>
+                @error('category_id') <span style="color:red";>{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
                 <label for="source_id">Источник</label>
@@ -26,14 +27,17 @@
                         <option value="{{ $source->id }}"@selected($news->source_id == $source->id)  >{{ $source->url }}</option>
                     @endforeach
                 </select>
+                @error('source_id') <span style="color:red";>{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
                 <label for="title">Заголовок</label>
                 <input type="text" class="form-control" name="title" id="title" value="{{ $news->title }}">
+                @error('title') <span style="color:red";>{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
                 <label for="author">Автор</label>
                 <input type="text" class="form-control" name="author" id="author" value="{{ $news->author }}">
+                @error('author') <span style="color:red";>{{ $message }}</span> @enderror
             </div>
             <div class="form-group">
                 <label for="status">Статус</label>

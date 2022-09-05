@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sources\CreateRequest;
+use App\Http\Requests\Sources\EditRequest;
 use Illuminate\Http\Request;
 use App\Models\Source;
 
@@ -37,22 +39,19 @@ class SourceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
-			'url' => ['required', 'string', 'min:5', 'max:255']
-		]);
 
         $source = new Source(
-            $request->only(['url', 'creator_name', 'creator_contacts', 'comment'])
+            $request->validated()
         );
 
         if($source->save()) {
             return redirect()->route('admin.source.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('messages.admin.sources.create.success'));
         }
 
-		return back()->with('error', 'Не удалось добавить запись');
+        return back()->with('error', __('messages.admin.sources.create.fail'));
 
     }
 
@@ -87,16 +86,17 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Source $source)
+    public function update(EditRequest $request, Source $source)
     {
-        $source->update($request->only(['url', 'creator_name', 'creator_contacts', 'comment']));
+        $source->update($request->validated());
 
         if($source->save()) {
             return redirect()->route('admin.source.index')
-                ->with('success', 'Запись успешно обновлена');
+                ->with('success', __('messages.admin.sources.update.success'));
+
         }
 
-        return back()->with('error', 'Не удалось обновить запись');
+        return back()->with('error', __('messages.admin.sources.update.fail'));
     }
 
     /**
@@ -109,11 +109,11 @@ class SourceController extends Controller
     {
         if($source->delete()){
             return redirect()->route('admin.source.index')
-                ->with('success', 'Запись удалена');
+                ->with('success', __('messages.admin.sources.destroy.success'));
         }
         else{
             return redirect()->route('admin.source.index')
-                ->with('error', 'Ошибка удаления');
+                ->with('error', __('messages.admin.sources.destroy.fail'));
         }
     }
 }

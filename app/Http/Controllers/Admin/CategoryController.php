@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Http\Requests\Categories\CreateRequest;
+use App\Http\Requests\Categories\EditRequest;
+use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
@@ -39,22 +42,18 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request): RedirectResponse
     {
-        $request->validate([
-			'caption' => ['required', 'string', 'min:5', 'max:255']
-		]);
-
         $category = new Category(
-            $request->only(['caption', 'description'])
+            $request->validated()
         );
 
         if($category->save()) {
             return redirect()->route('admin.category.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('messages.admin.categories.create.success'));
         }
 
-		return back()->with('error', 'Не удалось добавить запись');
+        return back()->with('error', __('messages.admin.categories.create.fail'));
     }
 
     /**
@@ -88,17 +87,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(EditRequest $request, Category $category): RedirectResponse
     {
-        $category->caption = $request->input('caption');
-        $category->description = $request->input('description');
+        $category = $category->fill($request->validated());
 
         if($category->save()) {
             return redirect()->route('admin.category.index')
-                ->with('success', 'Запись успешно обновлена');
+                    ->with('success', __('messages.admin.categories.update.success'));
+
         }
 
-        return back()->with('error', 'Не удалось обновить запись');
+        return back()->with('error', __('messages.admin.categories.update.fail'));
     }
 
     /**
@@ -111,11 +110,11 @@ class CategoryController extends Controller
     {
         if($category->delete()){
             return redirect()->route('admin.category.index')
-                ->with('success', 'Запись удалена');
+                ->with('success', __('messages.admin.categories.destroy.success'));
         }
         else{
             return redirect()->route('admin.category.index')
-                ->with('error', 'Ошибка удаления');
+                ->with('error', __('messages.admin.categories.destroy.fail'));
         }
     }
 }

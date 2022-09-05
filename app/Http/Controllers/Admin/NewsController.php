@@ -10,6 +10,8 @@ use App\Models\News;
 use App\Queries\NewsQueryBuilder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\EditRequest;
 
 class NewsController extends Controller
 {
@@ -21,7 +23,7 @@ class NewsController extends Controller
     public function index(NewsQueryBuilder $builder)
     {
         return view('admin.news.index', [
-			'newsList' => $builder->getNews()
+			'newsList' => $builder->getAllNews()
 		]);
     }
 
@@ -47,21 +49,20 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(
-        Request $request,
+        CreateRequest $request,
         NewsQueryBuilder $builder
     ): RedirectResponse {
 
         $news = $builder->create(
-            $request->only(['category_id', 'source_id',
-                'title', 'author', 'status', 'image', 'description'])
+            $request->validated()
         );
         
         if($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('messages.admin.news.create.success'));
         }
 
-        return back()->with('error', 'Не удалось добавить запись');
+        return back()->with('error', __('messages.admin.news.create.fail'));
     }
 
     /**
@@ -100,7 +101,7 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(
-        Request $request,
+        EditRequest  $request,
         News $news,
         NewsQueryBuilder $builder
     ): RedirectResponse {
@@ -108,11 +109,11 @@ class NewsController extends Controller
             'title', 'author', 'status', 'image', 'description']))) {
 
             return redirect()->route('admin.news.index')
-                    ->with('success', 'Запись успешно обновлена');
+                    ->with('success', __('messages.admin.news.update.success'));
 
         }
 
-        return back()->with('error', 'Не удалось обновить запись');
+        return back()->with('error', __('messages.admin.news.update.fail'));
     }
 
     /**
@@ -125,11 +126,11 @@ class NewsController extends Controller
     {
         if($news->delete()){
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись удалена');
+                ->with('success', __('messages.admin.news.destroy.success'));
         }
         else{
             return redirect()->route('admin.news.index')
-                ->with('error', 'Ошибка удаления');
+                ->with('error', __('messages.admin.news.destroy.fail'));
         }
     }
 }
