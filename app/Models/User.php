@@ -40,5 +40,13 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'bool',
+    ];
+
+    public static $selectedFields = [
+        'id',
+        'name',
+        'email',
+        'is_admin',
     ];
 }
