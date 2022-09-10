@@ -31,6 +31,9 @@ class CreateRequest extends FormRequest
             'status' => ['required', 'string', 'min:5', 'max:7'],
             'image'  => ['nullable', 'image', 'mimes:jpg,png'],
             'description' => ['nullable', 'string'],
+            'link' => ['nullable', 'string'],
+            'guid' => ['nullable', 'string'],
+            'pub_date' => ['nullable', 'timestamp'],
         ];
     }
 

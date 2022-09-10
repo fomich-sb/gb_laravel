@@ -30,4 +30,10 @@ class Category extends Model
         return $this->hasMany(News::class,
             'category_id', 'id');
     }
+    
+    public function sources(): HasMany
+    {
+        return $this->hasMany(Source::class,
+            'source_id', 'id');
+    }
 }

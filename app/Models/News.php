@@ -22,7 +22,10 @@ class News extends Model
         'author',
         'status',
         'image',
-        'description'
+        'description',
+        'link',
+        'guid',
+        'pub_date'
     ];
 
 

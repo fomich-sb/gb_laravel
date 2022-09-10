@@ -48,6 +48,17 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="link">Ссылка</label>
+                <input type="text" class="form-control" name="link" id="link" value="{{ $news->link }}">
+                @error('link') <span style="color:red";>{{ $message }}</span> @enderror
+            </div>
+            <div class="form-group">
+                <label for="guid">GUID</label>
+                <input type="text" class="form-control" name="guid" id="guid" value="{{ $news->guid }}">
+                @error('guid') <span style="color:red";>{{ $message }}</span> @enderror
+            </div>
+
+            <div class="form-group">
                 <label for="image">Изображение</label>
                 <input type="file" class="form-control" name="image" id="image" >
             </div>

@@ -13,6 +13,15 @@
                 <input type="text" class="form-control" name="url" id="url" value="{{ old('url') }}">
             </div>
             <div class="form-group">
+                <label for="category_id">Категория</label>
+                <select class="form-control" name="category_id" id="category_id">
+                    <option value="0">Выбрать</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $category->caption }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="creator_name">Добавил</label>
                 <input type="text" class="form-control" name="creator_name" id="creator_name" value="{{ old('creator_name') }}">
             </div>

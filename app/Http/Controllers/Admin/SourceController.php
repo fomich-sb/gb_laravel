@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sources\CreateRequest;
 use App\Http\Requests\Sources\EditRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Source;
 
@@ -17,7 +18,7 @@ class SourceController extends Controller
      */
     public function index()
     {
-        $sourceList = Source::select(Source::$selectedFields)->get();
+        $sourceList = Source::select(Source::$selectedFields)->with('category')->get();
         return view('admin.source.index', [
             'sourceList' => $sourceList
         ]);
@@ -30,7 +31,10 @@ class SourceController extends Controller
      */
     public function create()
     {
-        return view('admin.source.create');
+        $categories = Category::all();
+        return view('admin.source.create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -74,8 +78,10 @@ class SourceController extends Controller
      */
     public function edit(Source $source)
     {
+        $categories = Category::all();
         return view('admin.source.edit', [
-            'source' => $source
+            'source' => $source,
+            'categories' => $categories,
         ]);
     }
 
@@ -88,8 +94,7 @@ class SourceController extends Controller
      */
     public function update(EditRequest $request, Source $source)
     {
-        $source->update($request->validated());
-
+        $source->fill($request->validated());
         if($source->save()) {
             return redirect()->route('admin.source.index')
                 ->with('success', __('messages.admin.sources.update.success'));

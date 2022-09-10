@@ -32,6 +32,14 @@
                     Пользователи
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.parser.*')) active @endif" href="{{ route('admin.parser.index') }}">
+                    <span data-feather="file" class="align-text-bottom"></span>
+                    ОБНОВИТЬ НОВОСТИ
+                </a>
+            </li>
+
         </ul>
     </div>
 </nav>

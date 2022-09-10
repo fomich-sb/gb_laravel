@@ -25,6 +25,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'url' => ['required', 'string', 'min:3', 'max:200'],
+            'category_id' => ['nullable', 'integer', 'exists:categories,id'],
             'creator_name' =>  ['nullable', 'string'],
             'creator_contacts' =>  ['nullable', 'string'],
             'comment' =>  ['nullable', 'string'],

@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SourceController as AdminSourceController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\ParserController;
+use App\Http\Controllers\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,9 @@ Route::middleware('auth')->group(function() {
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is_admin'], function() {
 		Route::get('/', AdminController::class)
 			->name('index');
+			
+		Route::get('/parser', ParserController::class)->name('parser.index');
+
 		Route::resource('category', AdminCategoryController::class);
 		Route::resource('news', AdminNewsController::class);
 		Route::resource('source', AdminSourceController::class);
@@ -58,3 +63,13 @@ Route::resource('source', SourceController::class);
 Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('/auth/redirect/{driver}', [SocialController::class, 'redirect'])
+        ->where('driver', '\w+')
+        ->name('social.auth.redirect');
+
+    Route::get('/auth/callback/{driver}', [SocialController::class, 'callback'])
+        ->where('driver', '\w+');
+});

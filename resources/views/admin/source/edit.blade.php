@@ -17,6 +17,16 @@
                 <input type="text" class="form-control" name="url" id="url" value="{{ $source->url }}">
             </div>
             <div class="form-group">
+                <label for="category_id">Категория</label>
+                <select class="form-control" name="category_id" id="category_id">
+                    <option value="0">Выбрать</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" @selected($source->category_id == $category->id) >{{ $category->caption }}</option>
+                    @endforeach
+                </select>
+                @error('category_id') <span style="color:red";>{{ $message }}</span> @enderror
+            </div>
+            <div class="form-group">
                 <label for="creator_name">Добавил</label>
                 <input type="text" class="form-control" name="creator_name" id="creator_name" value="{{ $source->creator_name }}">
             </div>

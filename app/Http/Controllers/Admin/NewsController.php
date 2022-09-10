@@ -105,8 +105,8 @@ class NewsController extends Controller
         News $news,
         NewsQueryBuilder $builder
     ): RedirectResponse {
-        if($builder->update($news, $request->only(['category_id', 'source_id',
-            'title', 'author', 'status', 'image', 'description']))) {
+        
+        if($builder->update($news, $request->validated())) {
 
             return redirect()->route('admin.news.index')
                     ->with('success', __('messages.admin.news.update.success'));

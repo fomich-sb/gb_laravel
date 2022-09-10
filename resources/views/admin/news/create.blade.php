@@ -35,6 +35,14 @@
                 <input type="text" class="form-control" name="author" id="author" value="{{ old('author') }}">
             </div>
             <div class="form-group">
+                <label for="link">Ссылка</label>
+                <input type="text" class="form-control" name="link" id="link" value="{{ old('link') }}">
+            </div>
+            <div class="form-group">
+                <label for="guid">GUID</label>
+                <input type="text" class="form-control" name="guid" id="guid" value="{{ old('guid') }}">
+            </div>
+            <div class="form-group">
                 <label for="status">Статус</label>
                 <select class="form-control" name="status" id="status">
                     <option @if(old('status') === 'ACTIVE') selected @endif>ACTIVE</option>

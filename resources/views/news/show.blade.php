@@ -5,5 +5,5 @@
 		<p class="lead" style="float: right;">{{ $news->category->caption }}</p>
 		<p class="lead">{{ $news->author }} @if(!is_null($news->created_at)) - {{ $news->created_at->format('d-m-Y H:i') }} @endif</p>
 		<p>{{ $news->description }}</p>
-
+	<a href="{{ $news->link }}" target="_blank">Полная статья...</a>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class Source extends Model
     public static $selectedFields = [
         'id',
         'url',
+        'category_id',
         'creator_name',
         'creator_contacts',
         'comment',
@@ -25,6 +27,7 @@ class Source extends Model
     
     protected $fillable = [
         'url',
+        'category_id',
         'creator_name',
         'creator_contacts',
         'comment'
@@ -33,6 +36,11 @@ class Source extends Model
     public function news(): HasMany
     {
         return $this->hasMany(News::class,
-            'sorce_id', 'id');
+            'source_id', 'id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

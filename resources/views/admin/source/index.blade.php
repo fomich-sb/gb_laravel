@@ -12,6 +12,7 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Контакты</th>
                 <th scope="col">URL</th>
+                <th scope="col">Категория</th>
                 <th scope="col">Примечание</th>
                 <th scope="col">Управление</th>
             </tr>
@@ -23,6 +24,11 @@
                 <td>{{ $source->creator_name }}</td>
                 <td>{{ $source->creator_contacts }}</td>
                 <td>{{ $source->url }}</td>
+                <td>
+                    @if($source->category)
+                        {{ $source->category->caption }}
+                    @endif
+                </td>
                 <td>{{ $source->comment }}</td>
                 <td> 
                     <a href="{{ route('admin.source.edit', ['source' => $source]) }}">Ред.</a> &nbsp; 
