@@ -6,8 +6,6 @@
     <div class="table-responsive">
         @include('inc.message')
         
-        <div>Новых новостей: {{ $results['newCnt'] }}</div>
-        <div>Обновлено новостей: {{ $results['updatedCnt'] }}</div>
-        <div>Ошибок: {{ $results['errorCnt'] }}</div>
+        <div>Выполняется загрузка новостей</div>
     </div>
 @endsection

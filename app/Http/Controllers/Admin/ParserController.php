@@ -8,6 +8,7 @@ use App\Models\Source;
 use App\Services\Contracts\Parser;
 use App\Services\NewsService;
 use Illuminate\Http\Request;
+use App\Jobs\NewsParsing;
 
 class ParserController extends Controller
 {
@@ -19,22 +20,12 @@ class ParserController extends Controller
      */
     public function __invoke(Request $request, Parser $parser, NewsService $newsService)
     {
-        $results = [
-            'newCnt' => 0,
-            'updatedCnt' => 0,
-            'errorCnt' => 0,
-        ];
-
         $sources = App(Source::class)->all();
         foreach($sources as $source)
         {
-            $load = $parser->setLink($source->url)
-                ->getParseData();
-            $newsService->updateNewsFromRssData($load, $source, $results);
+            \dispatch(new NewsParsing($source));
         }
 
-        return view('admin.parser.index', [
-            'results' => $results,
-        ]);
+        return view('admin.parser.index');
     }
 }

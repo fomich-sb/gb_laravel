@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\SocialController;
+use UniSharp\LaravelFilemanager\Lfm;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,10 @@ Route::middleware('auth')->group(function() {
 		Route::resource('source', AdminSourceController::class);
 		Route::resource('user', AdminUserController::class);
 	});
+});
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'is_admin']], function () {
+    Lfm::routes();
 });
 
 //category routes
